@@ -31,17 +31,41 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
 
-
+    const userCollection = client.db("techhubDB").collection("users")
     const productCollection = client.db("techhubDB").collection("products");
 
     app.get('/products', async (req, res) => {
-        const result = await productCollection.find().toArray();
-        console.log(result);
-        res.send(result);
+      const result = await productCollection.find().toArray();
+      console.log(result);
+      res.send(result);
     });
 
 
 
+    // app.get("/products/:id", async (req, res) => {
+    //   const id = req.params.id;
+    //   console.log(id);
+    //   const query = { _id: new ObjectId(id) };
+    //   const result = await productCollection.findOne(query);
+    //   res.send(result);
+    // });
+
+
+
+    app.post('/users', async (req, res) => {
+      const user = req.body;
+
+      // insert email if user doesnt exists:
+      // you can do this many ways (1. email unique, 2. upsert 3. simple checking)
+
+      const query = { email: user.email }
+      const existingUser = await userCollection.findOne(query);
+      if (existingUser) {
+        return res.send({ message: 'user already exists', insertedId: null })
+      }
+      const result = await userCollection.insertOne(user);
+      res.send(result);
+    })
 
 
 
