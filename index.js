@@ -32,13 +32,13 @@ async function run() {
     await client.connect();
 
 
-    const productCollection = client.db("tecthubDB").collection("products");
+    const productCollection = client.db("techhubDB").collection("products");
 
-
-    app.get('/products', async(req, res) =>{
-        const result = await productCollection.find().sort({ timestamp: -1 }).toArray();
+    app.get('/products', async (req, res) => {
+        const result = await productCollection.find().toArray();
+        console.log(result);
         res.send(result);
-    })
+    });
 
 
 
@@ -58,11 +58,11 @@ run().catch(console.dir);
 
 
 
-app.get('/', (req, res) =>{
-    res.send('tech hub is running');
+app.get('/', (req, res) => {
+  res.send('tech hub is running');
 })
 
 
-app.listen(port, () =>{
-    console.log(`tech hub is running on port ${port}`)
+app.listen(port, () => {
+  console.log(`tech hub is running on port ${port}`)
 })
