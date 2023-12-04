@@ -33,6 +33,7 @@ async function run() {
 
     const userCollection = client.db("techhubDB").collection("users")
     const productCollection = client.db("techhubDB").collection("products");
+    const reviewCollection = client.db("techhubDB").collection("reviews");
 
     app.get('/products', async (req, res) => {
       const result = await productCollection.find().toArray();
@@ -67,6 +68,20 @@ async function run() {
       res.send(result);
     })
 
+
+
+
+    app.post("/reviews", async (req, res) => {
+      const review = req.body;
+      const result = await reviewCollection.insertOne(review);
+      res.send(result);
+    });
+
+
+    // app.get('/reviews', async (req, res) => {
+    //   const result = await reviewCollection.find().toArray();
+    //   res.send(result);
+    // })
 
 
     // Send a ping to confirm a successful connection
